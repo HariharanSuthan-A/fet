@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-User Google Services Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="#4F46E5"/>
+                    <path d="M8 16C8 11.58 11.58 8 16 8C20.42 8 24 11.58 24 16C24 20.42 20.42 24 16 24C11.58 24 8 20.42 8 16Z" fill="white"/>
+                </svg>
+                <span>Google Services</span>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="auth">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3H9a6 6 0 0 0 0 12h4.5M9 21H15a6 6 0 0 0 0-12H10.5"/>
+                    </svg>
+                    <span>Authentication</span>
+                </button>
+                <button class="nav-item" data-section="gmail">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                    <span>Gmail</span>
+                </button>
+                <button class="nav-item" data-section="sheets">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/>
+                        <line x1="15" y1="3" x2="15" y2="21"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/>
+                        <line x1="3" y1="15" x2="21" y2="15"/>
+                    </svg>
+                    <span>Sheets</span>
+                </button>
+                <button class="nav-item" data-section="drive">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>Drive</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" id="logoutBtn" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Authentication</h1>
+                    <p id="pageDescription">Set up your Google OAuth credentials</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="userIdDisplay"></span>
+                        <div class="status-badge">Connected</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content">
+                <!-- Authentication Section -->
+                <section id="auth-section" class="section active">
+                    <div class="card">
+                        <h2>OAuth Setup</h2>
+                        <p class="subtitle">Configure your Google OAuth credentials</p>
+                        
+                        <form id="authForm" class="form">
+                            <div class="form-group">
+                                <label for="clientId">Client ID</label>
+                                <input type="text" id="clientId" placeholder="YOUR_CLIENT_ID.apps.googleusercontent.com" required>
+                                <small>Get this from Google Cloud Console</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="clientSecret">Client Secret</label>
+                                <input type="password" id="clientSecret" placeholder="Your client secret" required>
+                                <small>Keep this secure</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="redirectUri">Redirect URI</label>
+                                <input type="text" id="redirectUri" placeholder="http://localhost:3000/callback" value="http://localhost:3000/callback" required>
+                                <small>Must match Google Cloud Console settings</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Scopes</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="https://www.googleapis.com/auth/gmail.send" checked>
+                                        <span>Gmail Send</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="https://www.googleapis.com/auth/gmail.readonly" checked>
+                                        <span>Gmail Read</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="https://www.googleapis.com/auth/spreadsheets" checked>
+                                        <span>Sheets</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="https://www.googleapis.com/auth/drive.file" checked>
+                                        <span>Drive</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 3H9a6 6 0 0 0 0 12h4.5M9 21H15a6 6 0 0 0 0-12H10.5"/>
+                                </svg>
+                                Start OAuth Flow
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3>How it works</h3>
+                        <ol class="steps">
+                            <li>Enter your Google OAuth credentials</li>
+                            <li>Click "Start OAuth Flow"</li>
+                            <li>You'll be redirected to Google</li>
+                            <li>Authorize the application</li>
+                            <li>You'll be redirected back with your tokens</li>
+                            <li>Start using the platform!</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Gmail Section -->
+                <section id="gmail-section" class="section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="send-email">Send Email</button>
+                        <button class="tab-btn" data-tab="list-emails">List Emails</button>
+                    </div>
+
+                    <!-- Send Email Tab -->
+                    <div id="send-email" class="tab-content active">
+                        <div class="card">
+                            <h2>Send Email</h2>
+                            <form id="sendEmailForm" class="form">
+                                <div class="form-group">
+                                    <label for="emailTo">To</label>
+                                    <input type="email" id="emailTo" placeholder="recipient@example.com" required>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="emailCc">CC (optional)</label>
+                                        <input type="email" id="emailCc" placeholder="cc@example.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="emailBcc">BCC (optional)</label>
+                                        <input type="email" id="emailBcc" placeholder="bcc@example.com">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="emailSubject">Subject</label>
+                                    <input type="text" id="emailSubject" placeholder="Email subject" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="emailBody">Message</label>
+                                    <textarea id="emailBody" placeholder="Email message" rows="6" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <polyline points="22 6 12 13 2 6"/>
+                                    </svg>
+                                    Send Email
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- List Emails Tab -->
+                    <div id="list-emails" class="tab-content">
+                        <div class="card">
+                            <h2>List Emails</h2>
+                            <form id="listEmailsForm" class="form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="emailQuery">Search Query (optional)</label>
+                                        <input type="text" id="emailQuery" placeholder="e.g., from:sender@example.com, is:unread">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="emailMaxResults">Max Results</label>
+                                        <input type="number" id="emailMaxResults" value="10" min="1" max="100">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                    Search Emails
+                                </button>
+                            </form>
+
+                            <div id="emailsList" class="list-container"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sheets Section -->
+                <section id="sheets-section" class="section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="read-sheet">Read Sheet</button>
+                        <button class="tab-btn" data-tab="write-sheet">Write Sheet</button>
+                    </div>
+
+                    <!-- Read Sheet Tab -->
+                    <div id="read-sheet" class="tab-content active">
+                        <div class="card">
+                            <h2>Read Spreadsheet</h2>
+                            <form id="readSheetForm" class="form">
+                                <div class="form-group">
+                                    <label for="sheetId">Spreadsheet ID</label>
+                                    <input type="text" id="sheetId" placeholder="1BxiMVs0XRA5nFMKUVfIrWNw" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sheetRange">Range</label>
+                                    <input type="text" id="sheetRange" placeholder="Sheet1!A1:Z100" value="Sheet1">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                    Read Sheet
+                                </button>
+                            </form>
+
+                            <div id="sheetData" class="table-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Write Sheet Tab -->
+                    <div id="write-sheet" class="tab-content">
+                        <div class="card">
+                            <h2>Write to Spreadsheet</h2>
+                            <form id="writeSheetForm" class="form">
+                                <div class="form-group">
+                                    <label for="writeSheetId">Spreadsheet ID</label>
+                                    <input type="text" id="writeSheetId" placeholder="1BxiMVs0XRA5nFMKUVfIrWNw" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="writeSheetRange">Range</label>
+                                    <input type="text" id="writeSheetRange" placeholder="Sheet1!A1" value="Sheet1!A1" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="writeSheetData">Data (JSON format)</label>
+                                    <textarea id="writeSheetData" placeholder='[["Name", "Email"], ["John", "john@example.com"]]' rows="6" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                        <polyline points="17 21 17 13 7 13 7 21"/>
+                                        <polyline points="7 3 7 8 15 8"/>
+                                    </svg>
+                                    Write to Sheet
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Drive Section -->
+                <section id="drive-section" class="section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="upload-file">Upload File</button>
+                        <button class="tab-btn" data-tab="download-file">Download File</button>
+                    </div>
+
+                    <!-- Upload File Tab -->
+                    <div id="upload-file" class="tab-content active">
+                        <div class="card">
+                            <h2>Upload File to Drive</h2>
+                            <form id="uploadFileForm" class="form">
+                                <div class="form-group">
+                                    <label for="uploadFilePath">File Path</label>
+                                    <input type="text" id="uploadFilePath" placeholder="/path/to/file.pdf" required>
+                                    <small>Local file path on server</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadFileName">File Name (optional)</label>
+                                    <input type="text" id="uploadFileName" placeholder="document.pdf">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadMimeType">MIME Type</label>
+                                    <select id="uploadMimeType">
+                                        <option value="application/pdf">PDF</option>
+                                        <option value="image/jpeg">JPEG Image</option>
+                                        <option value="image/png">PNG Image</option>
+                                        <option value="text/plain">Text File</option>
+                                        <option value="application/vnd.openxmlformats-officedocument.wordprocessingml.document">Word Document</option>
+                                        <option value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Excel Sheet</option>
+                                        <option value="application/octet-stream">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadFolderId">Folder ID (optional)</label>
+                                    <input type="text" id="uploadFolderId" placeholder="Google Drive folder ID">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17 8 12 3 7 8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                    Upload File
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Download File Tab -->
+                    <div id="download-file" class="tab-content">
+                        <div class="card">
+                            <h2>Download File from Drive</h2>
+                            <form id="downloadFileForm" class="form">
+                                <div class="form-group">
+                                    <label for="downloadFileId">File ID</label>
+                                    <input type="text" id="downloadFileId" placeholder="Google Drive file ID" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="downloadOutputPath">Output Path (optional)</label>
+                                    <input type="text" id="downloadOutputPath" placeholder="/path/to/save/file.pdf">
+                                    <small>Leave empty to stream file</small>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                    Download File
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Modal for OAuth Callback -->
+    <div id="oauthModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Completing OAuth...</h2>
+            <p>Please wait while we process your authorization.</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
