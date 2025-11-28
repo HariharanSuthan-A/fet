@@ -2,7 +2,7 @@
  * Multi-User Google Services Platform - Frontend Application
  */
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://fet-three.vercel.app';
 
 // State management
 const state = {
