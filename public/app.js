@@ -2,7 +2,10 @@
  * Multi-User Google Services Platform - Frontend Application
  */
 
-const API_BASE_URL = 'https://fet-three.vercel.app';
+// Detect environment and set API base URL
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000'
+  : 'https://fet-three.vercel.app';
 
 // State management
 const state = {
